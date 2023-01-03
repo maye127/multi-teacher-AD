@@ -34,8 +34,8 @@ Put mvtec and cifar10 dataset in floder ./Data
 >>>readme.html  
 
 ## 2.Training process
-Use resnet152, vgg19, and densenet210 as teacher network.  
-Use resnet18, vgg11, and densenet121 as student network.  
+Use resnet152, vgg19, and densenet210 as teacher networks.  
+Use resnet18, vgg11, and densenet121 as student networks.  
 
 Train networks on MVTec dataset.   
 python finTS.py --dataset mvtec --student resnet --epoch 500 --evalepoch 50 --filepath ./mvtec_res --cover  
@@ -47,13 +47,13 @@ python finTS.py --dataset cifar10 --student resnet --epoch 500 --evalepoch 50 --
 python finTS.py --dataset cifar10 --student vgg --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_vgg --cover  
 python finTS.py --dataset cifar10 --student densenet --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_dense --cover  
 
-The result and model will save in --filepath.  
+The result and model will be saved in --filepath.  
 finTS.csv save the AUC for each evaluation.  
 Eval.csv save the AUC with best model.
 
 ## 3.Inference process
-When train each student, inference process is including, finTS.csv and Eval.csv are saved.  
-For multi student anomaly detection. Run following：  
+Inference process is included in each student training process, finTS.csv and Eval.csv are saved.  
+For multi-student inference. Run following：  
 python finTS_eval.py --dataset mvtec --filepath ./  
 python finTS_eval.py --dataset cifar10 --filepath ./   
 
