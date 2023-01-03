@@ -15,6 +15,10 @@ Put mvtec and cifar10 dataset in floder ./Data
 >Data
 >>mvtec
 >>>bottle  
+>>>>train  
+>>>>test  
+>>>>...
+
 >>>cable  
 >>>capsule  
 >>>...  
@@ -43,7 +47,7 @@ python finTS.py --dataset cifar10 --student resnet --epoch 500 --evalepoch 50 --
 python finTS.py --dataset cifar10 --student vgg --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_vgg --cover  
 python finTS.py --dataset cifar10 --student densenet --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_dense --cover  
 
-The result and model will save in --filepath  
+The result and model will save in --filepath.  
 finTS.csv save the AUC for each evaluation.  
 Eval.csv save the AUC with best model.
 
@@ -53,7 +57,7 @@ For multi student anomaly detection. Run following：
 python finTS_eval.py --dataset mvtec --filepath ./  
 python finTS_eval.py --dataset cifar10 --filepath ./   
 
-eval_mvtec.csv and eval_cifar10.csv will be saved in root folder.
+eval_mvtec.csv and eval_cifar10.csv will be saved in ./
 
 ## 4.Results on dataset.
 ### AUC on MVTec dataset
