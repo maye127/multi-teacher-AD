@@ -15,7 +15,6 @@ parser.add_argument('--filepath', type=str, default='./run')
 # parser.add_argument('--student', type=str, default='resnet', choices=['resnet', 'vgg', 'densenet'])
 opt = parser.parse_args()
 
-opt.dataset = 'cifar10'
 
 
 
