@@ -392,7 +392,7 @@ if __name__ == '__main__':
     res_mean = res.mean(axis=0)
     res_mean[0] = 0
     res_mean.max()
-    print(res_mean)
-    print(res_mean.argmax(), columns[res_mean.argmax()], res_mean.max())
-    res = np.concatenate([res, res_mean[np.newaxis, :]], axis=0)
+    # print(res_mean)
+    # print(res_mean.argmax(), columns[res_mean.argmax()], res_mean.max())
+    # res = np.concatenate([res, res_mean[np.newaxis, :]], axis=0)
     pd.DataFrame(columns=columns, data=res).to_csv(opt.filepath + '/Eval_' + opt.student + '.csv', encoding='utf-8')

@@ -17,8 +17,6 @@ opt = parser.parse_args()
 
 
 
-
-
 # compute results on different anomaly score, find max average AUC.
 res = list()
 for normal_lab in range(15 if opt.dataset == 'mvtec' else 10):
@@ -48,6 +46,8 @@ for normal_lab in range(15 if opt.dataset == 'mvtec' else 10):
             list_as.append(r1 * AS_z + r2 * AS_cossim + r3 * AS_rec)
             # 改进 list_as.append(r1 * normalization(AS_z) + r2 * normalization(AS_cossim) + r3 * normalization(AS_rec))
             columns.append(str(r1) + str(r2) + str(r3))
+    columns.append('normalization')
+    list_as.append(normalization(AS_z) + normalization(AS_cossim) + normalization(AS_rec))
     for Anomaly_Score in list_as:
         Anomaly_Score = Anomaly_Score.reshape(label_test.size, -1)
         Anomaly_Score = torch.max(Anomaly_Score, dim=1).values
@@ -61,5 +61,5 @@ res_mean[0] = 0
 res_mean.max()
 print(res_mean)
 print(res_mean.argmax(), columns[res_mean.argmax()], res_mean.max())
-res = np.concatenate([res, res_mean[np.newaxis, :]], axis=0)
+# res = np.concatenate([res, res_mean[np.newaxis, :]], axis=0)
 pd.DataFrame(columns=columns, data=res).to_csv(opt.filepath + '/eval_' + opt.dataset + '.csv', encoding='utf-8')
