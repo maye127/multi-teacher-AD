@@ -38,14 +38,14 @@ Use resnet152, vgg19, and densenet210 as teacher networks.
 Use resnet18, vgg11, and densenet121 as student networks.  
 
 Train networks on MVTec dataset.   
-python finTS.py --dataset mvtec --student resnet --epoch 500 --evalepoch 50 --filepath ./mvtec_res --cover  
-python finTS.py --dataset mvtec --student vgg --epoch 500 --evalepoch 50 --filepath ./mvtec_vgg --cover  
-python finTS.py --dataset mvtec --student densenet --epoch 500 --evalepoch 50 --filepath ./mvtec_dense --cover  
+python finTS.py --dataset mvtec --student resnet --epoch 500 --evalepoch 50 --filepath ./mvtec_res --cover --savemodel  
+python finTS.py --dataset mvtec --student vgg --epoch 500 --evalepoch 50 --filepath ./mvtec_vgg --cover --savemodel  
+python finTS.py --dataset mvtec --student densenet --epoch 500 --evalepoch 50 --filepath ./mvtec_dense --cover --savemodel  
 
 Train networks on Cifar10 dataset.   
-python finTS.py --dataset cifar10 --student resnet --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_res --cover  
-python finTS.py --dataset cifar10 --student vgg --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_vgg --cover  
-python finTS.py --dataset cifar10 --student densenet --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_dense --cover  
+python finTS.py --dataset cifar10 --student resnet --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_res --cover --savemodel  
+python finTS.py --dataset cifar10 --student vgg --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_vgg --cover --savemodel  
+python finTS.py --dataset cifar10 --student densenet --epoch 500 --evalepoch 50 --batch_size 32 --filepath ./cifar_dense --cover --savemodel  
 
 The result and model will be saved in --filepath.  
 finTS.csv save the AUC for each evaluation.  
@@ -53,9 +53,15 @@ Eval.csv save the AUC with best model.
 
 ## 3.Inference process
 Inference process is included in each student training process, finTS.csv and Eval.csv are saved.  
+Run inference only:  
+python finTS_inference.py --dataset mvtec --filepath ./mvtec_res  
+python finTS_inference.py --dataset cifar10 --filepath ./cifar_res  
+Eval.csv will be saved in --filepath.  
+
 For multi-student inference. Run following：  
 python finTS_eval.py --dataset mvtec --filepath ./  
 python finTS_eval.py --dataset cifar10 --filepath ./   
+(make sure you already trained resnet, vgg, and densenet students before)
 
 eval_mvtec.csv and eval_cifar10.csv will be saved in ./
 
