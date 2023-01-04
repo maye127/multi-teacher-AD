@@ -63,7 +63,9 @@ python finTS_eval.py --dataset mvtec --filepath ./
 python finTS_eval.py --dataset cifar10 --filepath ./   
 (make sure you already trained resnet, vgg, and densenet students before)
 
-eval_mvtec.csv and eval_cifar10.csv will be saved in ./
+eval_mvtec.csv and eval_cifar10.csv will be saved in ./  
+
+The max AUCs of each category in .csv file are the final results, some of them are shown below.  
 
 ## 4.Results on dataset.
 ### AUC on MVTec dataset
