@@ -46,8 +46,8 @@ for normal_lab in range(15 if opt.dataset == 'mvtec' else 10):
             list_as.append(r1 * AS_z + r2 * AS_cossim + r3 * AS_rec)
             # 改进 list_as.append(r1 * normalization(AS_z) + r2 * normalization(AS_cossim) + r3 * normalization(AS_rec))
             columns.append(str(r1) + str(r2) + str(r3))
-    columns.append('normalization')
-    list_as.append(normalization(AS_z) + normalization(AS_cossim) + normalization(AS_rec))
+    # columns.append('normalization')
+    # list_as.append(normalization(AS_z) + normalization(AS_cossim) + normalization(AS_rec))
     for Anomaly_Score in list_as:
         Anomaly_Score = Anomaly_Score.reshape(label_test.size, -1)
         Anomaly_Score = torch.max(Anomaly_Score, dim=1).values
