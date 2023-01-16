@@ -72,3 +72,11 @@ The max AUCs of each category in .csv file are the final results, some of them a
 ![RUNOOB ](https://github.com/maye127/multi-teacher-AD/blob/main/mvtec.png?raw=true )
 ### AUC on Cifar10 dataset
 ![RUNOOB ](https://github.com/maye127/multi-teacher-AD/blob/main/cifar10.png?raw=true )
+
+
+# Ablation Study
+## no-teacher model
+run finTS_teacher0.py to train a student without teacher.
+
+## single-teacher model
+run finTS_teacher1.py to train a student with a single teacher.
