@@ -270,6 +270,49 @@ if __name__ == '__main__':
         Net_SDe.eval()
         Net_Weight.eval()
 
+        # 计算用于nor的max和min mu std
+        AS_z = list()
+        AS_cossim = list()
+        AS_rec = list()
+        for i, (image, _) in enumerate(data_loader):
+            if opt.dataset == 'mvtec':
+                image = myMVTec.Fullcut(image)
+                image = torch.cat(image)
+            if cuda_availabel:
+                image = image.cuda()
+            with torch.no_grad():
+                z_S = Net_SEn(image)
+                x_S = Net_SDe(z_S)
+                z1 = (Teacher_1(image) - y_normal_T1_mean) / y_normal_T1_std
+                z2 = (Teacher_2(image) - y_normal_T2_mean) / y_normal_T2_std
+                z3 = (Teacher_3(image) - y_normal_T3_mean) / y_normal_T3_std
+                z_T = Net_Weight(torch.stack([z1, z2, z3], dim=1))
+                x_T = Net_SDe(z_T)
+            AS_z.append(torch.mean((z_S - z_T) ** 2, dim=1))
+            AS_cossim.append(1 - CosSim(z_S, z_T))
+            AS_rec.append(torch.mean((x_S - image) ** 2, dim=[1, 2, 3]))
+            print('', end='\r')
+            print('Compute max min,', i + 1, '/', len(data_loader), end='')
+        AS_z = torch.cat(AS_z).cpu()
+        AS_cossim = torch.cat(AS_cossim).cpu()
+        AS_rec = torch.cat(AS_rec).cpu()
+        AS_z_max = AS_z.max()
+        AS_z_min = AS_z.min()
+        # AS_z_mu = AS_z.mean()
+        # AS_z_std = AS_z.std()
+
+        AS_cossim_max = AS_cossim.max()
+        AS_cossim_min = AS_cossim.min()
+        # AS_cossim_mu = AS_cossim.mean()
+        # AS_cossim_std = AS_cossim.std()
+
+        AS_rec_max = AS_rec.max()
+        AS_rec_min = AS_rec.min()
+        # AS_rec_mu = AS_rec.mean()
+        # AS_rec_std = AS_rec.std()
+
+
+
         AS_z = list()
         AS_cossim = list()
         AS_rec = list()
@@ -308,12 +351,20 @@ if __name__ == '__main__':
                 list_as.append(r1 * AS_z + r2 * AS_cossim + r3 * AS_rec)
                 # 改进 list_as.append(r1 * normalization(AS_z) + r2 * normalization(AS_cossim) + r3 * normalization(AS_rec))
                 columns.append(str(r1) + str(r2) + str(r3))
+        # columns.append('normalization')
+        # list_as.append(normalization(AS_z) + normalization(AS_cossim) + normalization(AS_rec))
+        columns.append('nor')
+        list_as.append((AS_z-AS_z_min)/(AS_z_max-AS_z_min) + (AS_cossim-AS_cossim_min)/(AS_cossim_max-AS_cossim_min) + (AS_rec-AS_rec_min)/(AS_rec_max-AS_rec_min))
+        # columns.append('std')
+        # list_as.append((AS_z-AS_z_mu)/AS_z_std + (AS_cossim-AS_cossim_mu)/AS_cossim_std + (AS_rec-AS_rec_mu)/AS_rec_std)
+
         for Anomaly_Score in list_as:
             Anomaly_Score = Anomaly_Score.reshape(label_test.size, -1)
             Anomaly_Score = torch.max(Anomaly_Score, dim=1).values
             AUC = roc_auc_score(y_true=label_test, y_score=Anomaly_Score)
             res_class.append(AUC)
         res.append(np.stack(res_class))
+        print(res_class)
     res = np.stack(res)
 
     res_mean = res.mean(axis=0)
